@@ -6,3 +6,6 @@
 **/build    
 **/out
 **/public/
+
+**/prisma/dev.db
+**/prisma/migrations
