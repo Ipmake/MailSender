@@ -1,0 +1,111 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  password  String
+  name      String
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  emailLists    EmailList[]
+  templates     EmailTemplate[]
+  emailLogs     EmailLog[]
+  smtpConfig    SMTPConfig?
+  emailIdentity EmailIdentity?
+
+  @@map("users")
+}
+
+model EmailList {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  emails      Json     // Array of email addresses stored as JSON
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  userId      String
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("email_lists")
+}
+
+model EmailTemplate {
+  id        String   @id @default(cuid())
+  name      String
+  subject   String
+  text      String?
+  html      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("email_templates")
+}
+
+model SMTPConfig {
+  id       String  @id @default(cuid())
+  host     String
+  port     Int
+  secure   Boolean
+  username String
+  password String
+  userId   String  @unique
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("smtp_configs")
+}
+
+model EmailIdentity {
+  id        String  @id @default(cuid())
+  name      String
+  email     String
+  replyTo   String?
+  signature String?
+  userId    String  @unique
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("email_identities")
+}
+
+model EmailLog {
+  id          String    @id @default(cuid())
+  recipient   String
+  subject     String
+  success     Boolean
+  error       String?
+  messageId   String?
+  sentAt      DateTime  @default(now())
+  userId      String
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("email_logs")
+}
+
+enum Role {
+  USER
+  ADMIN
+}

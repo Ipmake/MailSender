@@ -1,0 +1,62 @@
+{
+  "name": "nevuemailsender",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "npm run clean && npm run build:frontend && npm run build:backend",
+    "build:backend": "npx prisma generate && tsc",
+    "build:frontend": "cd frontend && npm run build && cd .. && cp -r frontend/dist public",
+    "start": "node dist/index.js",
+    "dev": "npm run dev:backend",
+    "dev:backend": "nodemon src/index.ts",
+    "dev:frontend": "cd frontend && npm run dev",
+    "clean": "rm -rf dist public",
+    "install:frontend": "cd frontend && npm install",
+    "prod": "npm run build && npm start"
+  },
+  "keywords": [
+    "email",
+    "smtp",
+    "sender",
+    "typescript"
+  ],
+  "author": "",
+  "license": "ISC",
+  "description": "A TypeScript Node.js email sender application with web interface",
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^7.1.2",
+    "@mui/material": "^7.1.2",
+    "@mui/x-data-grid": "^8.5.2",
+    "@prisma/client": "^6.10.1",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.1",
+    "nodemailer": "^7.0.3",
+    "prisma": "^6.10.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/multer": "^1.4.13",
+    "@types/node": "^24.0.3",
+    "@types/nodemailer": "^6.4.17",
+    "@vitejs/plugin-react": "^4.5.2",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5"
+  }
+}
