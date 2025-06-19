@@ -30,7 +30,7 @@ docker run -d \
   --name nevuemailsender \
   -p 3000:3000 \
   -e JWT_SECRET=your-secret-key-here \
-  -v nevuemailsender_data:/app/data \
+  -v nevuemailsender_data:/data \
   ghcr.io/yourusername/nevuemailsender:latest
 ```
 
@@ -86,7 +86,7 @@ Create a `.env` file for custom configuration:
 JWT_SECRET=your-super-secret-key-minimum-32-characters
 
 # Database (optional)
-DATABASE_URL=file:./data/database.db
+DATABASE_URL=file:/data/database.db
 
 # Server (optional)
 PORT=3000
@@ -129,7 +129,7 @@ docker-compose exec app npx prisma studio
 ## Data Persistence
 
 All data is stored in Docker volumes:
-- Database: `/app/data/database.db`
+- Database: `/data/database.db`
 - Volume name: `nevuemailsender_nevuemailsender_data`
 
 Your emails, templates, and settings are automatically persisted between container restarts.

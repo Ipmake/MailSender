@@ -5,10 +5,10 @@
 echo "🚀 Starting NevuEmailSender..."
 
 # Ensure data directory exists
-mkdir -p /app/data
+mkdir -p /data
 
 # Initialize database if it doesn't exist
-if [ ! -f "/app/data/database.db" ]; then
+if [ ! -f "/data/database.db" ]; then
     echo "📊 Initializing database..."
     npx prisma migrate deploy
     

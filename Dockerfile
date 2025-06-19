@@ -61,14 +61,11 @@ RUN chmod +x docker-entrypoint.sh
 # Generate Prisma client for production
 RUN npx prisma generate
 
-# Create a non-root user
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nodejs -u 1001
+# Create necessary directories
+RUN mkdir -p /data
 
-# Create necessary directories and set permissions
-RUN mkdir -p /app/data && chown -R nodejs:nodejs /app
-
-USER nodejs
+# Set default environment variable for database location
+ENV DATABASE_URL=file:/data/database.db
 
 # Expose port
 EXPOSE 3000

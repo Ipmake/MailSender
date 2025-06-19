@@ -1,6 +1,11 @@
 # Nevu Email Sender Pro
 
-A modern, feature-rich TypeScript Node.js email sender application with a beautiful web interface. Send individual emails, bulk emails, manage templates, and configure SMTP settings all from a sleek web dashboard.
+A modern, feature-rich TypeScript Node.js email sender application with a beautiful web interface. Send individual docker run -d \
+  --name nevuemailsender \
+  -p 3000:3000 \
+  -e JWT_SECRET=your-secret-key \
+  -v nevuemailsender_data:/data \
+  nevuemailsender, bulk emails, manage templates, and configure SMTP settings all from a sleek web dashboard.
 
 ## ✨ Features
 
@@ -67,7 +72,7 @@ docker run -d \
   --name nevuemailsender \
   -p 3000:3000 \
   -e JWT_SECRET=your-super-secret-jwt-key-change-this-in-production \
-  -v nevuemailsender_data:/app/data \
+  -v nevuemailsender_data:/data \
   ghcr.io/yourusername/nevuemailsender:latest
 ```
 
@@ -167,7 +172,7 @@ Configure your SMTP settings through the web interface or environment variables:
 
 ### Database
 
-The application uses SQLite by default, which is perfect for single-instance deployments. The database file is stored in `/app/data/database.db` inside the container and is persisted using Docker volumes.
+The application uses SQLite by default, which is perfect for single-instance deployments. The database file is stored in `/data/database.db` inside the container and is persisted using Docker volumes.
 
 For PostgreSQL support, update the `DATABASE_URL` environment variable:
 ```
@@ -206,7 +211,7 @@ The application provides a RESTful API:
          - JWT_SECRET=your-super-secret-jwt-key-change-this
          - DATABASE_URL=file:./data/database.db
        volumes:
-         - app_data:/app/data
+         - app_data:/data
        restart: unless-stopped
    
    volumes:
