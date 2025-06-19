@@ -1,5 +1,5 @@
 # Build stage for frontend
-FROM node:18-alpine AS frontend-builder
+FROM node:22-alpine AS frontend-builder
 
 WORKDIR /app/frontend
 
@@ -16,7 +16,7 @@ COPY frontend/ ./
 RUN npm run build
 
 # Build stage for backend
-FROM node:18-alpine AS backend-builder
+FROM node:22-alpine AS backend-builder
 
 WORKDIR /app
 
@@ -36,13 +36,13 @@ RUN npx prisma generate
 RUN npm run build:backend
 
 # Production stage
-FROM node:18-alpine AS production
+FROM node:22-alpine AS production
 
 WORKDIR /app
 
 # Install only production dependencies
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm install --only=production
 
 # Copy built backend from builder stage
 COPY --from=backend-builder /app/dist ./dist
