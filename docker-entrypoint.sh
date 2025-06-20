@@ -4,6 +4,9 @@
 
 echo "🚀 Starting NevuEmailSender..."
 
+# Set DATA_DIR environment variable
+export DATA_DIR=/data
+
 # Ensure data directory exists
 mkdir -p /data
 echo "📁 Data directory ready: /data"

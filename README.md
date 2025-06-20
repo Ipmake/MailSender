@@ -62,7 +62,8 @@ A modern, feature-rich TypeScript Node.js email sender application with a beauti
    ```
 
 3. **Access the application**:
-   - Open your browser and go to `http://localhost:3000`
+   - Open your browser and go to `https://localhost:3000` (HTTPS with self-signed certificate)
+   - Your browser will show a security warning for the self-signed certificate - click "Advanced" and "Proceed to localhost"
    - Default admin credentials: `admin` / `admin123`
 
 ### Using Docker Run
@@ -72,9 +73,12 @@ docker run -d \
   --name nevuemailsender \
   -p 3000:3000 \
   -e JWT_SECRET=your-super-secret-jwt-key-change-this-in-production \
+  -e DATA_DIR=/data \
   -v nevuemailsender_data:/data \
   ghcr.io/yourusername/nevuemailsender:latest
 ```
+
+**Access**: `https://localhost:3000` (HTTPS with auto-generated self-signed certificate)
 
 ### Using Pre-built Image from GitHub Packages
 
@@ -178,6 +182,42 @@ For PostgreSQL support, update the `DATABASE_URL` environment variable:
 ```
 DATABASE_URL=postgresql://username:password@host:5432/database
 ```
+
+## 🔒 SSL/HTTPS Security
+
+The application **automatically generates self-signed SSL certificates** on first startup and runs on HTTPS by default for enhanced security.
+
+### SSL Certificate Generation
+
+- Certificates are automatically created in `/data/ssl/` directory
+- Uses OpenSSL to generate 2048-bit RSA certificates
+- Valid for 365 days with localhost and IP address support
+- Certificates persist across container restarts
+
+### Browser Security Warning
+
+Since the certificates are self-signed, your browser will show a security warning:
+1. Click "Advanced" or "Show details"
+2. Click "Proceed to localhost (unsafe)" or "Continue to this website"
+3. This is safe for local/private deployments
+
+### Disabling HTTPS (Not Recommended)
+
+To disable HTTPS and use HTTP instead, set the environment variable:
+```bash
+-e DISABLE_SSL=true
+```
+
+### Using Custom SSL Certificates
+
+To use your own SSL certificates, mount them to the container:
+```bash
+-v /path/to/your/ssl:/data/ssl:ro
+```
+
+Ensure your certificates are named:
+- `server.key` (private key)
+- `server.crt` (certificate)
 
 ## 🔧 API Endpoints
 

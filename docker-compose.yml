@@ -10,14 +10,15 @@ services:
     environment:
       - NODE_ENV=production
       - DATABASE_URL=file:/data/database.db
+      - DATA_DIR=/data
       - JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
       - PORT=3000
     volumes:
-      # Persist the database
+      # Persist the database and SSL certificates
       - app_data:/data
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"]
+      test: ["CMD-SHELL", "(node -e \"process.env.NODE_TLS_REJECT_UNAUTHORIZED='0'; require('https').get('https://localhost:3000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })\") || (node -e \"require('http').get('http://localhost:3000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })\")"]
       interval: 30s
       timeout: 10s
       retries: 3

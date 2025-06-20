@@ -38,6 +38,9 @@ RUN npm run build:backend
 # Production stage
 FROM node:22-alpine AS production
 
+# Install OpenSSL for certificate generation
+RUN apk add --no-cache openssl
+
 WORKDIR /app
 
 # Install only production dependencies
@@ -70,9 +73,10 @@ ENV DATABASE_URL=file:/data/database.db
 # Expose port
 EXPOSE 3000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })" || exit 1
+# Health check (try HTTPS first, fallback to HTTP)
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
+  CMD (node -e "process.env.NODE_TLS_REJECT_UNAUTHORIZED='0'; require('https').get('https://localhost:3000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })" 2>/dev/null) || \
+      (node -e "require('http').get('http://localhost:3000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })" || exit 1)
 
 # Start the application
 CMD ["./docker-entrypoint.sh"]

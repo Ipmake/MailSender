@@ -14,7 +14,7 @@
     "install:frontend": "cd frontend && npm install",
     "prod": "npm run build && npm start",
     "docker:build": "docker build -t nevuemailsender .",
-    "docker:run": "docker run -d --name nevuemailsender -p 3000:3000 -e JWT_SECRET=development-secret -v nevuemailsender_data:/data nevuemailsender",
+    "docker:run": "docker run -d --name nevuemailsender -p 3000:3000 -e JWT_SECRET=development-secret -e DATA_DIR=/data -v nevuemailsender_data:/data nevuemailsender",
     "docker:stop": "docker stop nevuemailsender && docker rm nevuemailsender",
     "docker:logs": "docker logs -f nevuemailsender"
   },

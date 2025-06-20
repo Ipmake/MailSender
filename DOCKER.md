@@ -20,7 +20,8 @@ This guide will get you up and running with NevuEmailSender using Docker in unde
    ```
 
 3. **Access the app**:
-   - Open: http://localhost:3000
+   - Open: **https://localhost:3000** (HTTPS with self-signed certificate)
+   - Your browser will show a security warning - click "Advanced" and "Proceed to localhost"
    - Login: `admin` / `admin123`
 
 ## Option 2: Using Docker Run
@@ -30,6 +31,7 @@ docker run -d \
   --name nevuemailsender \
   -p 3000:3000 \
   -e JWT_SECRET=your-secret-key-here \
+  -e DATA_DIR=/data \
   -v nevuemailsender_data:/data \
   ghcr.io/yourusername/nevuemailsender:latest
 ```
@@ -46,6 +48,26 @@ docker run -d \
    ```bash
    docker-compose up -d --build
    ```
+
+## 🔒 SSL/HTTPS Information
+
+The application automatically runs on HTTPS with self-signed certificates:
+
+- **Certificates Location**: `/data/ssl/` in container
+- **Auto-Generated**: Created on first startup if not present
+- **Persistent**: Certificates survive container restarts
+- **Browser Warning**: Expected for self-signed certificates
+
+### Disable HTTPS (Not Recommended)
+```bash
+docker run -d \
+  --name nevuemailsender \
+  -p 3000:3000 \
+  -e DISABLE_SSL=true \
+  -e JWT_SECRET=your-secret-key-here \
+  -v nevuemailsender_data:/data \
+  ghcr.io/yourusername/nevuemailsender:latest
+```
 
 ## First Setup
 
