@@ -1,6 +1,6 @@
 # 🐳 Docker Quick Start Guide
 
-This guide will get you up and running with NevuEmailSender using Docker in under 5 minutes.
+This guide will get you up and running with FyraEmailSender using Docker in under 5 minutes.
 
 ## Prerequisites
 
@@ -11,7 +11,7 @@ This guide will get you up and running with NevuEmailSender using Docker in unde
 
 1. **Download the configuration**:
    ```bash
-   curl -O https://raw.githubusercontent.com/yourusername/NevuEmaiLSender/main/docker-compose.yml
+   curl -O https://raw.githubusercontent.com/yourusername/FyraEmaiLSender/main/docker-compose.yml
    ```
 
 2. **Start the application**:
@@ -28,20 +28,20 @@ This guide will get you up and running with NevuEmailSender using Docker in unde
 
 ```bash
 docker run -d \
-  --name nevuemailsender \
+  --name fyraemailsender \
   -p 3000:3000 \
   -e JWT_SECRET=your-secret-key-here \
   -e DATA_DIR=/data \
-  -v nevuemailsender_data:/data \
-  ghcr.io/yourusername/nevuemailsender:latest
+  -v fyraemailsender_data:/data \
+  ghcr.io/yourusername/fyraemailsender:latest
 ```
 
 ## Option 3: Build from Source
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/NevuEmaiLSender.git
-   cd NevuEmaiLSender
+   git clone https://github.com/yourusername/FyraEmaiLSender.git
+   cd FyraEmaiLSender
    ```
 
 2. **Build and run**:
@@ -61,12 +61,12 @@ The application automatically runs on HTTPS with self-signed certificates:
 ### Disable HTTPS (Not Recommended)
 ```bash
 docker run -d \
-  --name nevuemailsender \
+  --name fyraemailsender \
   -p 3000:3000 \
   -e DISABLE_SSL=true \
   -e JWT_SECRET=your-secret-key-here \
-  -v nevuemailsender_data:/data \
-  ghcr.io/yourusername/nevuemailsender:latest
+  -v fyraemailsender_data:/data \
+  ghcr.io/yourusername/fyraemailsender:latest
 ```
 
 ## First Setup
@@ -93,10 +93,10 @@ docker-compose down
 docker-compose pull && docker-compose up -d
 
 # Backup data
-docker run --rm -v nevuemailsender_nevuemailsender_data:/data -v $(pwd):/backup busybox tar czf /backup/backup.tar.gz /data
+docker run --rm -v fyraemailsender_fyraemailsender_data:/data -v $(pwd):/backup busybox tar czf /backup/backup.tar.gz /data
 
 # Restore data
-docker run --rm -v nevuemailsender_nevuemailsender_data:/data -v $(pwd):/backup busybox tar xzf /backup/backup.tar.gz -C /
+docker run --rm -v fyraemailsender_fyraemailsender_data:/data -v $(pwd):/backup busybox tar xzf /backup/backup.tar.gz -C /
 ```
 
 ## Environment Variables
@@ -152,7 +152,7 @@ docker-compose exec app npx prisma studio
 
 All data is stored in Docker volumes:
 - Database: `/data/database.db`
-- Volume name: `nevuemailsender_nevuemailsender_data`
+- Volume name: `fyraemailsender_fyraemailsender_data`
 
 Your emails, templates, and settings are automatically persisted between container restarts.
 

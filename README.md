@@ -1,11 +1,11 @@
-# Nevu Email Sender Pro
+# Fyra Email Sender Pro
 
 A modern, feature-rich TypeScript Node.js email sender application with a beautiful web interface. Send individual docker run -d \
-  --name nevuemailsender \
+  --name fyraemailsender \
   -p 3000:3000 \
   -e JWT_SECRET=your-secret-key \
-  -v nevuemailsender_data:/data \
-  nevuemailsender, bulk emails, manage templates, and configure SMTP settings all from a sleek web dashboard.
+  -v fyraemailsender_data:/data \
+  fyraemailsender, bulk emails, manage templates, and configure SMTP settings all from a sleek web dashboard.
 
 ## ✨ Features
 
@@ -53,7 +53,7 @@ A modern, feature-rich TypeScript Node.js email sender application with a beauti
 
 1. **Download the docker-compose.yml file**:
    ```bash
-   curl -O https://raw.githubusercontent.com/yourusername/NevuEmaiLSender/main/docker-compose.yml
+   curl -O https://raw.githubusercontent.com/yourusername/FyraEmaiLSender/main/docker-compose.yml
    ```
 
 2. **Start the application**:
@@ -70,12 +70,12 @@ A modern, feature-rich TypeScript Node.js email sender application with a beauti
 
 ```bash
 docker run -d \
-  --name nevuemailsender \
+  --name fyraemailsender \
   -p 3000:3000 \
   -e JWT_SECRET=your-super-secret-jwt-key-change-this-in-production \
   -e DATA_DIR=/data \
-  -v nevuemailsender_data:/data \
-  ghcr.io/yourusername/nevuemailsender:latest
+  -v fyraemailsender_data:/data \
+  ghcr.io/yourusername/fyraemailsender:latest
 ```
 
 **Access**: `https://localhost:3000` (HTTPS with auto-generated self-signed certificate)
@@ -85,7 +85,7 @@ docker run -d \
 The latest Docker image is automatically built and published to GitHub Container Registry on every push to main:
 
 ```bash
-docker pull ghcr.io/yourusername/nevuemailsender:latest
+docker pull ghcr.io/yourusername/fyraemailsender:latest
 ```
 
 ## 🛠️ Local Development
@@ -98,8 +98,8 @@ docker pull ghcr.io/yourusername/nevuemailsender:latest
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/NevuEmaiLSender.git
-   cd NevuEmaiLSender
+   git clone https://github.com/yourusername/FyraEmaiLSender.git
+   cd FyraEmaiLSender
    ```
 
 2. **Install dependencies**:
@@ -140,19 +140,19 @@ If you want to build the Docker image yourself:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/NevuEmaiLSender.git
-cd NevuEmaiLSender
+git clone https://github.com/yourusername/FyraEmaiLSender.git
+cd FyraEmaiLSender
 
 # Build the Docker image
-docker build -t nevuemailsender .
+docker build -t fyraemailsender .
 
 # Run the container
 docker run -d \
-  --name nevuemailsender \
+  --name fyraemailsender \
   -p 3000:3000 \
   -e JWT_SECRET=your-super-secret-jwt-key \
-  -v nevuemailsender_data:/app/data \
-  nevuemailsender
+  -v fyraemailsender_data:/app/data \
+  fyraemailsender
 ```
 
 ## ⚙️ Configuration
@@ -243,7 +243,7 @@ The application provides a RESTful API:
    version: '3.8'
    services:
      app:
-       image: ghcr.io/yourusername/nevuemailsender:latest
+       image: ghcr.io/yourusername/fyraemailsender:latest
        ports:
          - "3000:3000"
        environment:
@@ -313,7 +313,7 @@ View application logs:
 docker-compose logs -f
 
 # Docker run
-docker logs -f nevuemailsender
+docker logs -f fyraemailsender
 ```
 
 ## 📝 License

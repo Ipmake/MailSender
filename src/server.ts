@@ -40,7 +40,8 @@ class EmailSenderServer {
     // Security middleware
     this.app.use(helmet({
       contentSecurityPolicy: false, // Disable for React app
-      crossOriginEmbedderPolicy: false
+      crossOriginEmbedderPolicy: false,
+      hsts: false
     }));
     
     // CORS

@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Docker Setup Validation Script for NevuEmailSender
+# Docker Setup Validation Script for FyraEmailSender
 
-echo "🐳 NevuEmailSender Docker Setup Validator"
+echo "🐳 FyraEmailSender Docker Setup Validator"
 echo "=========================================="
 echo ""
 
@@ -44,7 +44,7 @@ echo "==============================="
 echo ""
 
 echo "1. Build the Docker image:"
-echo "   docker build -t nevuemailsender ."
+echo "   docker build -t fyraemailsender ."
 echo ""
 
 echo "2. Run with Docker Compose (recommended):"
@@ -53,11 +53,11 @@ echo ""
 
 echo "3. Or run with Docker directly:"
 echo "   docker run -d \\"
-echo "     --name nevuemailsender \\"
+echo "     --name fyraemailsender \\"
 echo "     -p 3000:3000 \\"
 echo "     -e JWT_SECRET=your-secret-key \\"
-echo "     -v nevuemailsender_data:/app/data \\"
-echo "     nevuemailsender"
+echo "     -v fyraemailsender_data:/app/data \\"
+echo "     fyraemailsender"
 echo ""
 
 echo "4. Access the application:"
@@ -67,21 +67,21 @@ echo ""
 
 echo "5. View logs:"
 echo "   docker-compose logs -f    # For docker-compose"
-echo "   docker logs -f nevuemailsender  # For docker run"
+echo "   docker logs -f fyraemailsender  # For docker run"
 echo ""
 
 echo "🚀 GitHub Container Registry:"
 echo "=============================="
 echo ""
 echo "Once the GitHub workflow runs, you can use the pre-built image:"
-echo "docker pull ghcr.io/yourusername/nevuemailsender:latest"
+echo "docker pull ghcr.io/yourusername/fyraemailsender:latest"
 echo ""
 
 echo "📁 Persistent Data:"
 echo "==================="
 echo ""
 echo "Database and configuration are stored in Docker volumes:"
-echo "- Volume name: nevuemailsender_data (docker-compose) or nevuemailsender_data (docker run)"
+echo "- Volume name: fyraemailsender_data (docker-compose) or fyraemailsender_data (docker run)"
 echo "- Container path: /app/data"
 echo "- Contains: database.db and other persistent files"
 echo ""

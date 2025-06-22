@@ -1,8 +1,8 @@
 #!/bin/sh
 
-# Entrypoint script for NevuEmailSender Docker container
+# Entrypoint script for FyraEmailSender Docker container
 
-echo "🚀 Starting NevuEmailSender..."
+echo "🚀 Starting FyraEmailSender..."
 
 # Set DATA_DIR environment variable
 export DATA_DIR=/data

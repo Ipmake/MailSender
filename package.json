@@ -1,5 +1,5 @@
 {
-  "name": "nevuemailsender",
+  "name": "fyraemailsender",
   "version": "1.0.0",
   "main": "dist/index.js",
   "scripts": {
@@ -13,10 +13,10 @@
     "clean": "rm -rf dist public",
     "install:frontend": "cd frontend && npm install",
     "prod": "npm run build && npm start",
-    "docker:build": "docker build -t nevuemailsender .",
-    "docker:run": "docker run -d --name nevuemailsender -p 3000:3000 -e JWT_SECRET=development-secret -e DATA_DIR=/data -v nevuemailsender_data:/data nevuemailsender",
-    "docker:stop": "docker stop nevuemailsender && docker rm nevuemailsender",
-    "docker:logs": "docker logs -f nevuemailsender"
+    "docker:build": "docker build -t fyraemailsender .",
+    "docker:run": "docker run -d --name fyraemailsender -p 3000:3000 -e JWT_SECRET=development-secret -e DATA_DIR=/data -v fyraemailsender_data:/data fyraemailsender",
+    "docker:stop": "docker stop fyraemailsender && docker rm fyraemailsender",
+    "docker:logs": "docker logs -f fyraemailsender"
   },
   "keywords": [
     "email",

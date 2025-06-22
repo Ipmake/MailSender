@@ -67,8 +67,8 @@ export function generateSSLCertificates(dataDir: string): SSLConfig {
       `-key "${keyPath}"`,
       `-out "${certPath}"`,
       '-days 365',
-      '-subj "/C=US/ST=State/L=City/O=NevuEmailSender/OU=Self-Signed/CN=localhost"',
-      '-addext "subjectAltName=DNS:localhost,DNS:*.localhost,DNS:nevuemailsender,DNS:*.nevuemailsender,IP:127.0.0.1,IP:0.0.0.0"'
+      '-subj "/C=US/ST=State/L=City/O=FyraEmailSender/OU=Self-Signed/CN=localhost"',
+      '-addext "subjectAltName=DNS:localhost,DNS:*.localhost,DNS:fyraemailsender,DNS:*.fyraemailsender,IP:127.0.0.1,IP:0.0.0.0"'
     ].join(' ');
 
     execSync(opensslCmd, { stdio: 'pipe' });

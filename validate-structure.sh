@@ -59,7 +59,7 @@ if [[ ${#missing_files[@]} -eq 0 && ${#missing_dirs[@]} -eq 0 ]]; then
     echo "🐳 Ready for Docker build!"
     echo ""
     echo "To build and run:"
-    echo "  docker build -t nevuemailsender ."
+    echo "  docker build -t fyraemailsender ."
     echo "  docker-compose up -d"
 else
     echo "❌ Missing files or directories detected!"

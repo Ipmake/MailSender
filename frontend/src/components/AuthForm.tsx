@@ -70,7 +70,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onSuccess }) => {
           <Box sx={{ textAlign: 'center', mb: 3 }}>
             <PersonIcon sx={{ fontSize: 48, color: 'primary.main', mb: 2 }} />
             <Typography variant="h4" gutterBottom>
-              Nevu Email Sender
+              Fyra Email Sender
             </Typography>
             <Typography variant="body2" color="text.secondary">
               Sign in to your account
