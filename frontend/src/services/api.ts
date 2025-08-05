@@ -88,6 +88,75 @@ class ApiService {
     });
   }
 
+  // Send bulk emails with streaming progress
+  async sendBulkEmailStream(
+    emailData: BulkEmailRequest, 
+    onProgress: (data: {
+      type: 'progress' | 'complete' | 'error';
+      processed: number;
+      total: number;
+      percentage: number;
+      successful: number;
+      failed: number;
+      currentEmail?: string;
+      lastResult?: any;
+      results?: any[];
+      error?: string;
+      details?: string;
+    }) => void
+  ): Promise<void> {
+    const token = localStorage.getItem('auth_token');
+    const response = await fetch('/api/emails/send-bulk-stream', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify(emailData),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to start bulk email sending');
+    }
+
+    const reader = response.body?.getReader();
+    if (!reader) {
+      throw new Error('No response stream available');
+    }
+
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.substring(6));
+              onProgress(data);
+              
+              if (data.type === 'complete' || data.type === 'error') {
+                return;
+              }
+            } catch (e) {
+              console.error('Error parsing SSE data:', e);
+            }
+          }
+        }
+      }
+    } finally {
+      reader.releaseLock();
+    }
+  }
+
   // Templates
   async getTemplates(): Promise<EmailTemplate[]> {
     return this.fetchApi<EmailTemplate[]>('/templates');

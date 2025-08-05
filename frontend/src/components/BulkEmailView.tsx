@@ -95,6 +95,13 @@ const BulkEmailView: React.FC = () => {
   const [isSending, setIsSending] = useState(false);
   const [progress, setProgress] = useState(0);
   const [recipientCount, setRecipientCount] = useState(0);
+  const [progressDetails, setProgressDetails] = useState({
+    processed: 0,
+    total: 0,
+    successful: 0,
+    failed: 0,
+    currentEmail: '',
+  });
   const { templates, loading: templatesLoading } = useTemplates();
   const { emailLists, loading: emailListsLoading } = useEmailLists();
 
@@ -137,29 +144,70 @@ const BulkEmailView: React.FC = () => {
     try {
       setIsSending(true);
       setProgress(0);
+      setProgressDetails({
+        processed: 0,
+        total: emails.length,
+        successful: 0,
+        failed: 0,
+        currentEmail: '',
+      });
 
-      await apiService.sendBulkEmail({
+      await apiService.sendBulkEmailStream({
         recipients: emails,
         subject: bulkEmail.subject,
         text: bulkEmail.text,
         html: bulkEmail.html,
+      }, (progressData) => {
+        if (progressData.type === 'progress') {
+          setProgress(progressData.percentage);
+          setProgressDetails({
+            processed: progressData.processed,
+            total: progressData.total,
+            successful: progressData.successful,
+            failed: progressData.failed,
+            currentEmail: progressData.currentEmail || '',
+          });
+        } else if (progressData.type === 'complete') {
+          setProgress(100);
+          setProgressDetails({
+            processed: progressData.processed,
+            total: progressData.total,
+            successful: progressData.successful,
+            failed: progressData.failed,
+            currentEmail: '',
+          });
+          
+          const successMessage = progressData.failed > 0 
+            ? `✅ Bulk email completed! ${progressData.successful} sent, ${progressData.failed} failed out of ${progressData.total} total.`
+            : `✅ Bulk email sent successfully to all ${progressData.successful} recipients!`;
+          
+          showSnackbar(successMessage, progressData.failed > 0 ? 'warning' : 'success');
+          
+          // Reset form after successful completion
+          setBulkEmail({
+            subject: '',
+            text: '',
+            html: '',
+            recipients: '',
+          });
+          setRecipientCount(0);
+        } else if (progressData.type === 'error') {
+          throw new Error(progressData.error || 'Unknown error occurred');
+        }
       });
 
-      showSnackbar(`✅ Bulk email sent to ${emails.length} recipients!`, 'success');
-      
-      // Reset form
-      setBulkEmail({
-        subject: '',
-        text: '',
-        html: '',
-        recipients: '',
-      });
-      setRecipientCount(0);
     } catch (error) {
       showSnackbar(`❌ Failed to send bulk email: ${error instanceof Error ? error.message : 'Unknown error'}`, 'error');
     } finally {
       setIsSending(false);
       setProgress(0);
+      setProgressDetails({
+        processed: 0,
+        total: 0,
+        successful: 0,
+        failed: 0,
+        currentEmail: '',
+      });
     }
   };
 
@@ -467,11 +515,39 @@ const BulkEmailView: React.FC = () => {
 
       {/* Progress Bar */}
       {isSending && (
-        <Box sx={{ p: 1, borderTop: '1px solid', borderColor: 'divider', bgcolor: 'background.default' }}>
-          <Typography variant="caption" color="text.secondary" sx={{ mb: 1, display: 'block' }}>
-            Sending emails... ({Math.round(progress)}% complete)
-          </Typography>
-          <LinearProgress variant="determinate" value={progress} />
+        <Box sx={{ p: 2, borderTop: '1px solid', borderColor: 'divider', bgcolor: 'background.default' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+            <Typography variant="body2" color="text.primary" sx={{ fontWeight: 500 }}>
+              Sending Bulk Email
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {Math.round(progress)}% complete
+            </Typography>
+          </Box>
+          
+          <LinearProgress variant="determinate" value={progress} sx={{ mb: 1, height: 8, borderRadius: 4 }} />
+          
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Typography variant="caption" color="text.secondary">
+              {progressDetails.processed} of {progressDetails.total} processed
+            </Typography>
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <Typography variant="caption" color="success.main">
+                ✅ {progressDetails.successful} sent
+              </Typography>
+              {progressDetails.failed > 0 && (
+                <Typography variant="caption" color="error.main">
+                  ❌ {progressDetails.failed} failed
+                </Typography>
+              )}
+            </Box>
+          </Box>
+          
+          {progressDetails.currentEmail && (
+            <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block', fontFamily: 'monospace' }}>
+              Current: {progressDetails.currentEmail}
+            </Typography>
+          )}
         </Box>
       )}
 
